@@ -41,9 +41,9 @@ export default function Home() {
         <AutoScrollParagraphs
           containerId="about-couple-section"
           paragraphSelector=".about-line"
-          fixedScrollDuration={1000}
-          delayBetweenLines={2000}
-          initialDelay={1000}
+          fixedScrollDuration={8000}
+          delayBetweenLines={5000}
+          initialDelay={3000}
         />
       </main>
     </div>

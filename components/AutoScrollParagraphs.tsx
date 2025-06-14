@@ -16,9 +16,9 @@ const AutoScrollParagraphs: React.FC<AutoScrollParagraphsProps> = ({
   containerId,
   paragraphSelector = '.scroll-line',
   // REMOVE scrollSpeed from the destructured props
-  delayBetweenLines = 1000,
-  initialDelay = 0,
-  fixedScrollDuration = 1000, // Nilai default 1000ms (1 detik)
+  delayBetweenLines = 6000,
+  initialDelay = 2000,
+  fixedScrollDuration = 7000, // Nilai default 1000ms (1 detik)
 }) => {
   const [isClient, setIsClient] = useState(false);
   const isScrollingRef = useRef(false);
