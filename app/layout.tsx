@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Lora, Great_Vibes } from 'next/font/google';
 import './globals.css'; // Pastikan ini diimpor
 
+
 const lora = Lora({
   subsets: ['latin'],
   variable: '--font-lora',

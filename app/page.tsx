@@ -5,6 +5,8 @@ import EventDetails from '../components/EventDetails';
 import React from 'react'; // Penting untuk JSX dalam komponen React
 import { Lora, Great_Vibes } from 'next/font/google'; // Import font dari Next.js
 import RainEffect from '../components/RainEffect';
+import FloatingWhatsAppButton from '../components/FloatingWhatsAppButton';
+
 
 // Inisialisasi font Google
 // Lora: Untuk teks paragraf umum, body, dll.
@@ -35,6 +37,8 @@ export default function Home() {
         <HeroSection />
         <AboutCouple />
         <EventDetails />
+        <FloatingWhatsAppButton />
+  
   
 
         {/* Anda bisa menambahkan komponen lain di sini, contoh: */}
@@ -47,3 +51,4 @@ export default function Home() {
     </div>
   );
 }
+
