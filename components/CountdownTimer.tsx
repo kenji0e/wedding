@@ -13,10 +13,8 @@ interface CountdownProps {
 }
 
 const CountdownTimer: React.FC<CountdownProps> = ({ targetDate }) => {
-  // Menginisialisasi timeLeft dengan objek kosong atau nilai default yang akan konsisten di server dan client.
-  // Perhitungan sebenarnya akan dimulai di useEffect.
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({});
-  const [hasMounted, setHasMounted] = useState(false); // State untuk melacak hidrasi
+  const [hasMounted, setHasMounted] = useState(false);
 
   const calculateTimeLeft = (): TimeLeft => {
     const difference = +new Date(targetDate) - +new Date();
@@ -34,19 +32,16 @@ const CountdownTimer: React.FC<CountdownProps> = ({ targetDate }) => {
   };
 
   useEffect(() => {
-    // Set hasMounted menjadi true setelah komponen dihidrasi di client
     setHasMounted(true);
-    // Lakukan perhitungan waktu awal setelah mount
     setTimeLeft(calculateTimeLeft());
 
-    const timer = setInterval(() => { // Menggunakan setInterval untuk pembaruan setiap detik
+    const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    return () => clearInterval(timer); // Menggunakan clearInterval untuk cleanup
-  }, [targetDate]); // targetDate sebagai dependency jika bisa berubah
+    return () => clearInterval(timer);
+  }, [targetDate]);
 
-  // Jika belum di-mount (masih di server atau sebelum hidrasi), render null atau UI statis
   if (!hasMounted) {
     return (
         <div className="flex justify-center items-center font-bold text-gray-800 bg-white bg-opacity-80 p-4 rounded-xl shadow-lg">
@@ -60,9 +55,14 @@ const CountdownTimer: React.FC<CountdownProps> = ({ targetDate }) => {
   Object.entries(timeLeft).forEach(([interval, value]) => {
     if (typeof value === 'number') {
       timerComponents.push(
-        <span key={interval} className="flex flex-col items-center mx-2 p-3 bg-white bg-opacity-20 rounded-lg">
-          <span className="text-3xl md:text-4xl font-bold">{value.toString().padStart(2, '0')}</span>
-          <span className="text-sm md:text-base capitalize">{interval}</span>
+        // PERUBAHAN DI SINI:
+        // mx-1 untuk margin horizontal kecil di mobile, mx-2 untuk desktop
+        // p-2 untuk padding kecil di mobile, p-3 untuk desktop
+        <span key={interval} className="flex flex-col items-center mx-1 sm:mx-2 p-2 sm:p-3 bg-white bg-opacity-60 rounded-lg">
+          {/* text-2xl untuk angka di mobile, md:text-4xl untuk desktop */}
+          <span className="text-2xl md:text-4xl font-bold">{value.toString().padStart(2, '0')}</span>
+          {/* text-xs untuk label di mobile, md:text-base untuk desktop */}
+          <span className="text-xs md:text-base capitalize">{interval}</span>
         </span>
       );
     }
