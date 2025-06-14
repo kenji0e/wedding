@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react'; // Impor forwardRef di sini
 
 const eventData = [
   {
@@ -12,9 +12,13 @@ const eventData = [
   },
 ];
 
-const EventDetails: React.FC = () => {
+// Ubah EventDetails menjadi komponen yang menggunakan forwardRef
+// ref akan merujuk ke elemen <section> utama dari EventDetails
+const EventDetails = forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <section id="event-details" className="py-8 md:py-16 bg-gradient-to-br from-pink-50 to-white text-gray-800">
+    // Pasang ref ke elemen <section> utama.
+    // Pastikan elemen ini adalah elemen terluar dari komponen yang ingin Anda gulirkan.
+    <section ref={ref} id="event-details" className="py-8 md:py-16 bg-gradient-to-br from-pink-50 to-white text-gray-800">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* <h2 className="text-2xl md:text-5xl font-bold text-center mb-12 md:mb-16 text-pink-700 font-script leading-tight"></h2> */}
 
@@ -30,7 +34,7 @@ const EventDetails: React.FC = () => {
                 <h3 className="text-2xl font-semibold text-center mb-6 text-pink-600 font-script">
                   {event.type}
                 </h3>
-                
+
                 {/* Detail Waktu dan Lokasi */}
                 <div className="space-y-4 mb-6">
                   {/* Tanggal */}
@@ -90,6 +94,9 @@ const EventDetails: React.FC = () => {
       </div>
     </section>
   );
-};
+});
+
+// Penting: Berikan nama tampilan untuk debugging React DevTools
+EventDetails.displayName = 'EventDetails';
 
 export default EventDetails;

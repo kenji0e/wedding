@@ -1,54 +1,51 @@
 // app/page.tsx
+"use client";
+
 import HeroSection from '../components/HeroSection';
 import AboutCouple from '../components/AboutCouple';
 import EventDetails from '../components/EventDetails';
-import React from 'react'; // Penting untuk JSX dalam komponen React
-import { Lora, Great_Vibes } from 'next/font/google'; // Import font dari Next.js
+import React, { useRef } from 'react';
+import { Lora, Great_Vibes } from 'next/font/google';
 import RainEffect from '../components/RainEffect';
 import FloatingWhatsAppButton from '../components/FloatingWhatsAppButton';
+import AutoScrollParagraphs from '../components/AutoScrollParagraphs';
 
-
-// Inisialisasi font Google
-// Lora: Untuk teks paragraf umum, body, dll.
 const lora = Lora({
   subsets: ['latin'],
-  variable: '--font-lora', // Digunakan di tailwind.config.js
-  weight: ['400', '700'],   // Pilih bobot yang ingin Anda gunakan
-  display: 'swap',          // Strategi tampilan font
-});
-
-// Great Vibes: Untuk judul yang artistik atau tanda tangan
-const greatVibes = Great_Vibes({
-  subsets: ['latin'],
-  variable: '--font-great-vibes', // Digunakan di tailwind.config.js
-  weight: '400',                  // Great Vibes biasanya hanya punya satu bobot
+  variable: '--font-lora',
+  weight: ['400', '700'],
   display: 'swap',
 });
 
-// Komponen halaman utama
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  variable: '--font-great-vibes',
+  weight: '400',
+  display: 'swap',
+});
+
 export default function Home() {
+  const eventDetailsRef = useRef<HTMLDivElement>(null);
+
   return (
-    // Terapkan variabel CSS font ke elemen <div> root
-    // Ini akan membuat font tersedia di seluruh komponen anak
     <div className={`${lora.variable} ${greatVibes.variable} font-sans`}>
       <main>
-        {/* Render komponen-komponen undangan Anda */}
         <RainEffect />
+        {/* REMOVE eventDetailsRef from HeroSection call */}
         <HeroSection />
         <AboutCouple />
-        <EventDetails />
+        {/* eventDetailsRef still needs to be passed to EventDetails */}
+        <EventDetails ref={eventDetailsRef} />
         <FloatingWhatsAppButton />
-  
-  
 
-        {/* Anda bisa menambahkan komponen lain di sini, contoh: */}
-        {/* <GallerySection /> */}
-        {/* <RSVPForm /> */}
-        {/* <GiftSection /> */}
-        {/* <GuestbookSection /> */}
-        {/* <Footer /> */}
+        <AutoScrollParagraphs
+          containerId="about-couple-section"
+          paragraphSelector=".about-line"
+          fixedScrollDuration={1000}
+          delayBetweenLines={2000}
+          initialDelay={1000}
+        />
       </main>
     </div>
   );
 }
-

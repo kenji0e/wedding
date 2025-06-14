@@ -1,43 +1,56 @@
+// components/HeroSection.tsx
 "use client";
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import CountdownTimer from './CountdownTimer';
 
-const HeroSection: React.FC = () => {
+// Hapus interface HeroSectionProps karena tidak lagi menerima eventDetailsRef
+// Jika komponen ini tidak menerima props, interface tidak lagi diperlukan.
+// interface HeroSectionProps {
+//   eventDetailsRef: React.RefObject<HTMLElement>;
+// }
+
+// Hapus eventDetailsRef dari parameter fungsi karena tidak lagi diterima sebagai prop
+const HeroSection: React.FC = () => { // Tidak ada props lagi di sini
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isClient, setIsClient] = useState(false);
 
   // Tanggal Pernikahan Anda (GANTI DENGAN TANGGAL ASLI ANDA)
-  const weddingDate = "2025-06-22T10:00:00"; // Contoh: 14 September 2025, jam 9 pagi WIB
+  const weddingDate = "2025-06-22T10:00:00";
 
-  // Fungsi untuk memutar musik dan melakukan scroll (dipanggil oleh tombol)
+  // Fungsi untuk memutar musik dan melakukan scroll ke akhir HeroSection
   const handleOpenInvite = () => {
-    // Mencoba memutar musik. Ini akan berhasil hanya jika ada interaksi pengguna sebelumnya.
+    // 1. Putar Musik
     if (audioRef.current) {
       audioRef.current.play().catch(error => {
         console.error("Gagal memutar musik secara otomatis:", error);
-        // Anda bisa menambahkan UI di sini untuk memberitahu pengguna
-        // "Klik tombol play di pojok kanan bawah untuk memutar musik"
       });
     }
 
-    // Scroll ke bawah setinggi viewport untuk menampilkan konten berikutnya
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
+    // 2. Gulir ke bawah setinggi viewport untuk menampilkan konten berikutnya
+    // Ini akan menggulir ke akhir HeroSection itu sendiri.
+    if (isClient) { // Pastikan operasi window hanya di client
+      window.scrollTo({
+        top: window.innerHeight, // Gulir setinggi 100% dari viewport saat ini
+        behavior: 'smooth'
+      });
+      console.log('Tombol Buka Undangan diklik. Menggulir ke akhir HeroSection.');
+    }
   };
 
-  
-       return (
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
     <section className="relative h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
       {/* Background Image: Ganti URL gambar di sini */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bunga.jpg')" }} // <<< GANTI BARIS INI
+        style={{ backgroundImage: "url('/images/bunga.jpg')" }}
       >
-        <div className="absolute inset-0 bg-black opacity-40"></div> {/* Overlay hitam untuk kontras */}
+        <div className="absolute inset-0 bg-black opacity-40"></div>
       </div>
-
 
       {/* Content */}
       <div className="relative z-10 p-4 max-w-2xl mx-auto flex flex-col items-center">
@@ -49,8 +62,7 @@ const HeroSection: React.FC = () => {
           22 Juni 2025
         </p>
 
-        {/* CountdownTimer */}
-        <CountdownTimer targetDate={weddingDate} />
+        {isClient && <CountdownTimer targetDate={weddingDate} />}
 
         <button
           onClick={handleOpenInvite}
